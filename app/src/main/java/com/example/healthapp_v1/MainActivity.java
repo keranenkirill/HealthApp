@@ -28,18 +28,11 @@ public class MainActivity extends AppCompatActivity {
 
         //assign variable
         drawerLayout = findViewById(R.id.drawer_layout);
-        fab = findViewById(R.id.fab);
+    }
 
-        fab.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-
-                redirectActivity(MainActivity.this, KyselyActivity.class);
-
-            }
-
-        });
-
+    public void onFabClick(View view) {
+        Intent intent = new Intent(this, KyselyActivity.class);
+        startActivity(intent);
     }
 
     public void ClickMenu(View view){

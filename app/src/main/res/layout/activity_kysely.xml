@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:onClick="onButtonPress"
-        android:text="Vastaus 1"
+        android:text="Kyllä"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:onClick="onButtonPress"
-        android:text="Vastaus 2"
+        android:text="En"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
