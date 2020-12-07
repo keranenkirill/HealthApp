@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MemManager.instance.get("name");
-
 
         if(getIntent().getExtras() == null){
             MemManager.instance.init(this);
