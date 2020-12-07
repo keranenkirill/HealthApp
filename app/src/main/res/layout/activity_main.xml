@@ -30,11 +30,12 @@
             <include layout="@layout/main_toolbar" />
 
 
-            <TextView
+            <ListView
+                android:id="@+id/homer"
                 android:layout_width="match_parent"
                 android:layout_height="675dp"
                 android:gravity="center"
-                android:text="Homer"
+
                 android:textSize="50sp"
                 android:textStyle="bold" />
 

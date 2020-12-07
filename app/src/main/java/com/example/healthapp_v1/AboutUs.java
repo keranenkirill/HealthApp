@@ -7,9 +7,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.os.Bundle;
 import android.view.View;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+
 public class AboutUs extends AppCompatActivity {
     //initialize variable
     DrawerLayout drawerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

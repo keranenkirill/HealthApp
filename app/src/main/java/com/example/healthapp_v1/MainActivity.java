@@ -8,14 +8,31 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     //initialize variable
     DrawerLayout drawerLayout;
     FloatingActionButton fab;
+
+    public static final String EXTRA_MESSAGE = "com.example.project.MESSAGE";
+
+    String vastaus;
 
     //public static void Logout(AboutUs aboutUs) {
    // }
@@ -25,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //assign variable
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -38,6 +56,38 @@ public class MainActivity extends AppCompatActivity {
     public void ClickMenu(View view){
         //Open drawer
         openDrawer(drawerLayout);
+
+
+        MemManager.instance.init(this);
+
+        ArrayList<String> nimetMuistiin = new ArrayList<>();
+
+        Collections.addAll(nimetMuistiin,"Fucker", "Shitface", "Assbutter", "Tall fucker");
+
+        MemManager.instance.add("numerot", nimetMuistiin);
+
+
+        ArrayList<String> nimetMuistista = new ArrayList<>();
+
+        MemManager.instance.get("numerot", nimetMuistista);
+
+
+
+        JSONArray nimetMuistista2 = (JSONArray)MemManager.instance.get("numerot");
+
+
+
+
+
+        for(String item : nimetMuistista){
+            Log.w("VARASTO", item);
+        }
+
+        Log.w("VARASTO", "" + MemManager.instance.verbose());
+
+
+
+
 
     }
 
@@ -67,7 +117,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void ClickHome(View view){
         //recreate activity
-        recreate();
+        //recreate();
+
+
+
     }
 
     public void ClickDashboard(View view){
@@ -139,11 +192,32 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         //close drawer
         closeDrawer(drawerLayout);
-
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        ArrayList<String> historia = new ArrayList<>();
+
+        MemManager.instance.get("historia", historia);
+
+        //
+
+
+        ListView listViewHomer = findViewById(R.id.homer);
+
+        listViewHomer.setAdapter(new ArrayAdapter<String>(
+
+                this, R.layout.historia_alkio_layout, historia
+
+        ) );
 
 
 
+
+
+    }
 }
