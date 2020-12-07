@@ -38,6 +38,8 @@ public class KyselyActivity extends AppCompatActivity {
         kysymykset.add("Oletko nukkunut hyvin?");
         kysymykset.add("Haluatko kuunnella musiikkia?");
 
+
+
         vastaukset.add("Kävelylenkki. Laita rentouttavaa musiikkia soimaan ja keskity maisemiin");
         vastaukset.add("Rentouttavaa joogaa.");
         vastaukset.add("Ryhmäjumpaa, musiikilla tai ilman.");
