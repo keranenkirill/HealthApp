@@ -25,6 +25,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
+
 public class MainActivity extends AppCompatActivity {
     //initialize variable
     DrawerLayout drawerLayout;
@@ -38,10 +40,21 @@ public class MainActivity extends AppCompatActivity {
    // }
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MemManager.instance.get("name");
+
+
+        if(getIntent().getExtras() == null){
+            MemManager.instance.init(this);
+            if(!MemManager.instance.has("historia")) {
+                MemManager.instance.add("historia", new JSONArray());
+            }
+        }
 
 
         //assign variable
@@ -56,9 +69,6 @@ public class MainActivity extends AppCompatActivity {
     public void ClickMenu(View view){
         //Open drawer
         openDrawer(drawerLayout);
-
-
-        MemManager.instance.init(this);
 
         ArrayList<String> nimetMuistiin = new ArrayList<>();
 
@@ -184,40 +194,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-
     @Override
     protected void onPause(){
         super.onPause();
         //close drawer
         closeDrawer(drawerLayout);
+        MemManager.instance.save(this);
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
 
-
         ArrayList<String> historia = new ArrayList<>();
 
         MemManager.instance.get("historia", historia);
 
-        //
-
 
         ListView listViewHomer = findViewById(R.id.homer);
+
 
         listViewHomer.setAdapter(new ArrayAdapter<String>(
 
                 this, R.layout.historia_alkio_layout, historia
-
         ) );
-
-
-
-
 
     }
 }

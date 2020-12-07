@@ -1,0 +1,464 @@
+Index: app/src/main/java/com/example/healthapp_v1/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/healthapp_v1/MainActivity.java	(revision 89436633ef0f2adf5481fcff247ffc29100f3101)
++++ app/src/main/java/com/example/healthapp_v1/MainActivity.java	(date 1607094196895)
+@@ -8,15 +8,32 @@
+ import android.content.DialogInterface;
+ import android.content.Intent;
+ import android.os.Bundle;
++import android.util.Log;
+ import android.view.View;
++import android.widget.ArrayAdapter;
++import android.widget.ListView;
++import android.widget.TextView;
+ 
+ import com.google.android.material.floatingactionbutton.FloatingActionButton;
+ 
++import org.json.JSONArray;
++import org.json.JSONException;
++import org.json.JSONObject;
++import org.w3c.dom.Text;
++
++import java.lang.reflect.Array;
++import java.util.ArrayList;
++import java.util.Collections;
++
+ public class MainActivity extends AppCompatActivity {
+     //initialize variable
+     DrawerLayout drawerLayout;
+     FloatingActionButton fab;
+ 
++    public static final String EXTRA_MESSAGE = "com.example.project.MESSAGE";
++
++    String vastaus;
++
+     //public static void Logout(AboutUs aboutUs) {
+    // }
+ 
+@@ -26,6 +43,7 @@
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_main);
+ 
++
+         //assign variable
+         drawerLayout = findViewById(R.id.drawer_layout);
+     }
+@@ -39,6 +57,38 @@
+         //Open drawer
+         openDrawer(drawerLayout);
+ 
++
++        MemManager.instance.init(this);
++
++        ArrayList<String> nimetMuistiin = new ArrayList<>();
++
++        Collections.addAll(nimetMuistiin,"Fucker", "Shitface", "Assbutter", "Tall fucker");
++
++        MemManager.instance.add("numerot", nimetMuistiin);
++
++
++        ArrayList<String> nimetMuistista = new ArrayList<>();
++
++        MemManager.instance.get("numerot", nimetMuistista);
++
++
++
++        JSONArray nimetMuistista2 = (JSONArray)MemManager.instance.get("numerot");
++
++
++
++
++
++        for(String item : nimetMuistista){
++            Log.w("VARASTO", item);
++        }
++
++        Log.w("VARASTO", "" + MemManager.instance.verbose());
++
++
++
++
++
+     }
+ 
+     public static void openDrawer(DrawerLayout drawerLayout){
+@@ -67,7 +117,10 @@
+ 
+     public void ClickHome(View view){
+         //recreate activity
+-        recreate();
++        //recreate();
++
++
++
+     }
+ 
+     public void ClickDashboard(View view){
+@@ -139,11 +192,32 @@
+         super.onPause();
+         //close drawer
+         closeDrawer(drawerLayout);
++    }
++
++
++    @Override
++    protected void onResume() {
++        super.onResume();
+ 
+-    }
++
++        ArrayList<String> historia = new ArrayList<>();
++
++        MemManager.instance.get("historia", historia);
++
++        //
++
++
++        ListView listViewHomer = findViewById(R.id.homer);
++
++        listViewHomer.setAdapter(new ArrayAdapter<String>(
++
++                this, R.layout.historia_alkio_layout, historia
+ 
++        ) );
+ 
+ 
+ 
+ 
++
++    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/healthapp_v1/AboutUs.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/healthapp_v1/AboutUs.java	(revision 89436633ef0f2adf5481fcff247ffc29100f3101)
++++ app/src/main/java/com/example/healthapp_v1/AboutUs.java	(date 1607084668687)
+@@ -7,10 +7,15 @@
+ import android.os.Bundle;
+ import android.view.View;
+ 
++import java.io.FileInputStream;
++import java.io.FileNotFoundException;
++
++
+ public class AboutUs extends AppCompatActivity {
+     //initialize variable
+     DrawerLayout drawerLayout;
+ 
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+Index: app/src/main/java/com/example/healthapp_v1/VastausActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/healthapp_v1/VastausActivity.java	(revision 89436633ef0f2adf5481fcff247ffc29100f3101)
++++ app/src/main/java/com/example/healthapp_v1/VastausActivity.java	(date 1607094036246)
+@@ -7,6 +7,8 @@
+ import android.view.View;
+ import android.widget.TextView;
+ 
++import org.json.JSONArray;
++
+ public class VastausActivity extends AppCompatActivity {
+     public static final String EXTRA_MESSAGE = "com.example.project.MESSAGE";
+     private String vastaus;
+@@ -27,6 +29,16 @@
+         if (view == findViewById(R.id.suorita)) {
+             Intent intent = new Intent(this, MainActivity.class);
+             intent.putExtra(EXTRA_MESSAGE, vastaus);
++
++
++            /**
++            JSONArray historia = (JSONArray)MemManager.instance.get("historia");
++
++            historia.put(vastaus);
++
++            */
++
++
+             startActivity(intent);
+         } else if (view == findViewById(R.id.peruuta)) {
+             Intent intent = new Intent(this, MainActivity.class);
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/vcs.xml	(revision 89436633ef0f2adf5481fcff247ffc29100f3101)
++++ .idea/vcs.xml	(date 1607084668700)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+-    <mapping directory="" vcs="Git" />
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision 89436633ef0f2adf5481fcff247ffc29100f3101)
++++ app/src/main/res/layout/activity_main.xml	(date 1607094196900)
+@@ -30,11 +30,12 @@
+             <include layout="@layout/main_toolbar" />
+ 
+ 
+-            <TextView
++            <ListView
++                android:id="@+id/homer"
+                 android:layout_width="match_parent"
+                 android:layout_height="675dp"
+                 android:gravity="center"
+-                android:text="Homer"
++
+                 android:textSize="50sp"
+                 android:textStyle="bold" />
+ 
+Index: lisatty_historiaominaisuudet,_sovellus_toistaiseksi_kaatuilee_.patch
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lisatty_historiaominaisuudet,_sovellus_toistaiseksi_kaatuilee_.patch	(date 1607338307923)
++++ lisatty_historiaominaisuudet,_sovellus_toistaiseksi_kaatuilee_.patch	(date 1607338307923)
+@@ -0,0 +1,228 @@
++Index: app/src/main/java/com/example/healthapp_v1/MainActivity.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- app/src/main/java/com/example/healthapp_v1/MainActivity.java	(revision 89436633ef0f2adf5481fcff247ffc29100f3101)
+++++ app/src/main/java/com/example/healthapp_v1/MainActivity.java	(date 1607094196895)
++@@ -8,15 +8,32 @@
++ import android.content.DialogInterface;
++ import android.content.Intent;
++ import android.os.Bundle;
+++import android.util.Log;
++ import android.view.View;
+++import android.widget.ArrayAdapter;
+++import android.widget.ListView;
+++import android.widget.TextView;
++ 
++ import com.google.android.material.floatingactionbutton.FloatingActionButton;
++ 
+++import org.json.JSONArray;
+++import org.json.JSONException;
+++import org.json.JSONObject;
+++import org.w3c.dom.Text;
+++
+++import java.lang.reflect.Array;
+++import java.util.ArrayList;
+++import java.util.Collections;
+++
++ public class MainActivity extends AppCompatActivity {
++     //initialize variable
++     DrawerLayout drawerLayout;
++     FloatingActionButton fab;
++ 
+++    public static final String EXTRA_MESSAGE = "com.example.project.MESSAGE";
+++
+++    String vastaus;
+++
++     //public static void Logout(AboutUs aboutUs) {
++    // }
++ 
++@@ -26,6 +43,7 @@
++         super.onCreate(savedInstanceState);
++         setContentView(R.layout.activity_main);
++ 
+++
++         //assign variable
++         drawerLayout = findViewById(R.id.drawer_layout);
++     }
++@@ -39,6 +57,38 @@
++         //Open drawer
++         openDrawer(drawerLayout);
++ 
+++
+++        MemManager.instance.init(this);
+++
+++        ArrayList<String> nimetMuistiin = new ArrayList<>();
+++
+++        Collections.addAll(nimetMuistiin,"Fucker", "Shitface", "Assbutter", "Tall fucker");
+++
+++        MemManager.instance.add("numerot", nimetMuistiin);
+++
+++
+++        ArrayList<String> nimetMuistista = new ArrayList<>();
+++
+++        MemManager.instance.get("numerot", nimetMuistista);
+++
+++
+++
+++        JSONArray nimetMuistista2 = (JSONArray)MemManager.instance.get("numerot");
+++
+++
+++
+++
+++
+++        for(String item : nimetMuistista){
+++            Log.w("VARASTO", item);
+++        }
+++
+++        Log.w("VARASTO", "" + MemManager.instance.verbose());
+++
+++
+++
+++
+++
++     }
++ 
++     public static void openDrawer(DrawerLayout drawerLayout){
++@@ -67,7 +117,10 @@
++ 
++     public void ClickHome(View view){
++         //recreate activity
++-        recreate();
+++        //recreate();
+++
+++
+++
++     }
++ 
++     public void ClickDashboard(View view){
++@@ -139,11 +192,32 @@
++         super.onPause();
++         //close drawer
++         closeDrawer(drawerLayout);
+++    }
+++
+++
+++    @Override
+++    protected void onResume() {
+++        super.onResume();
++ 
++-    }
+++
+++        ArrayList<String> historia = new ArrayList<>();
+++
+++        MemManager.instance.get("historia", historia);
+++
+++        //
+++
+++
+++        ListView listViewHomer = findViewById(R.id.homer);
+++
+++        listViewHomer.setAdapter(new ArrayAdapter<String>(
+++
+++                this, R.layout.historia_alkio_layout, historia
++ 
+++        ) );
++ 
++ 
++ 
++ 
+++
+++    }
++ }
++\ No newline at end of file
++Index: app/src/main/java/com/example/healthapp_v1/AboutUs.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- app/src/main/java/com/example/healthapp_v1/AboutUs.java	(revision 89436633ef0f2adf5481fcff247ffc29100f3101)
+++++ app/src/main/java/com/example/healthapp_v1/AboutUs.java	(date 1607084668687)
++@@ -7,10 +7,15 @@
++ import android.os.Bundle;
++ import android.view.View;
++ 
+++import java.io.FileInputStream;
+++import java.io.FileNotFoundException;
+++
+++
++ public class AboutUs extends AppCompatActivity {
++     //initialize variable
++     DrawerLayout drawerLayout;
++ 
+++
++     @Override
++     protected void onCreate(Bundle savedInstanceState) {
++         super.onCreate(savedInstanceState);
++Index: app/src/main/java/com/example/healthapp_v1/VastausActivity.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- app/src/main/java/com/example/healthapp_v1/VastausActivity.java	(revision 89436633ef0f2adf5481fcff247ffc29100f3101)
+++++ app/src/main/java/com/example/healthapp_v1/VastausActivity.java	(date 1607094036246)
++@@ -7,6 +7,8 @@
++ import android.view.View;
++ import android.widget.TextView;
++ 
+++import org.json.JSONArray;
+++
++ public class VastausActivity extends AppCompatActivity {
++     public static final String EXTRA_MESSAGE = "com.example.project.MESSAGE";
++     private String vastaus;
++@@ -27,6 +29,16 @@
++         if (view == findViewById(R.id.suorita)) {
++             Intent intent = new Intent(this, MainActivity.class);
++             intent.putExtra(EXTRA_MESSAGE, vastaus);
+++
+++
+++            /**
+++            JSONArray historia = (JSONArray)MemManager.instance.get("historia");
+++
+++            historia.put(vastaus);
+++
+++            */
+++
+++
++             startActivity(intent);
++         } else if (view == findViewById(R.id.peruuta)) {
++             Intent intent = new Intent(this, MainActivity.class);
++Index: .idea/vcs.xml
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- .idea/vcs.xml	(revision 89436633ef0f2adf5481fcff247ffc29100f3101)
+++++ .idea/vcs.xml	(date 1607084668700)
++@@ -1,6 +1,6 @@
++ <?xml version="1.0" encoding="UTF-8"?>
++ <project version="4">
++   <component name="VcsDirectoryMappings">
++-    <mapping directory="" vcs="Git" />
+++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++   </component>
++ </project>
++\ No newline at end of file
++Index: app/src/main/res/layout/activity_main.xml
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- app/src/main/res/layout/activity_main.xml	(revision 89436633ef0f2adf5481fcff247ffc29100f3101)
+++++ app/src/main/res/layout/activity_main.xml	(date 1607094196900)
++@@ -30,11 +30,12 @@
++             <include layout="@layout/main_toolbar" />
++ 
++ 
++-            <TextView
+++            <ListView
+++                android:id="@+id/homer"
++                 android:layout_width="match_parent"
++                 android:layout_height="675dp"
++                 android:gravity="center"
++-                android:text="Homer"
+++
++                 android:textSize="50sp"
++                 android:textStyle="bold" />
++ 

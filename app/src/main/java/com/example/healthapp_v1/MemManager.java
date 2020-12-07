@@ -78,8 +78,18 @@ public class MemManager {
 
     }
 
+    /**
+     * Palauttaa JSONlistasta objektin
+     * @author keran
+     * @param name JSONlistan alkion nimi
+     * @return Object JSON listan alkio
+     */
     public Object get(String name){// hae json listasta
         return json_store.opt(name);
+    }
+
+    public boolean has(String name){
+        return json_store.has(name);
     }
 
     public void get(String name, ArrayList list){
@@ -107,7 +117,7 @@ public class MemManager {
 
 
 
-    public void add(String name, ArrayList list){
+    public void add(String name, ArrayList list){//muuttaa arraylistin sisällön json muotoon.
         JSONArray jar = new JSONArray();
 
         for(Object item : list){
