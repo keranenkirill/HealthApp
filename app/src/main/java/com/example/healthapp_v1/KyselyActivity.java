@@ -12,16 +12,17 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+/**
+ * Conducts a survey of four questions and returns a relaxing activity based on the survey.
+ * Passes the relaxing activity and it's description forward to VastausActivity.java.
+ * Uses RentoutumisActiviteetit.java class to keep track of the points during the survey.
+ * @author Jimi Takamäki
+ */
 public class KyselyActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.project.MESSAGE";
     public static final String EXTRA_MESSAGE2 = "com.example.project.MESSAGE2";
     private ArrayList<String> kysymykset = new ArrayList<String>();
     private int kysymysNumero = 0;
-    private ArrayList<String> vastaukset = new ArrayList<String>();
-    private int aktiviteetti1Pisteet = 0;
-    private int aktiviteetti2Pisteet = 0;
-    private int aktiviteetti3Pisteet = 0;
-    private int aktiviteetti4Pisteet = 0;
 
     RentoutusAktiviteetit kavelylenkki = new RentoutusAktiviteetit("Kävelylenkki", "Pyri keskittymään maisemiin. Voit halutessasi laittaa rentouttavaa musiikkia soimaan.");
     RentoutusAktiviteetit jooga = new RentoutusAktiviteetit("Jooga", "Kokeile joogaa. Tyyli vapaa.");
@@ -29,6 +30,11 @@ public class KyselyActivity extends AppCompatActivity {
     RentoutusAktiviteetit rentoutumishetki = new RentoutusAktiviteetit("Rentoutumishetki", "Keskity hengitykseen ja positiivisiin ajatuksiin.");
 
     @Override
+
+    /**
+     * Adds the four questions to the kysymykset arraylist.
+     * Sets the question on it's respective TextView.
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kysely);
@@ -38,20 +44,17 @@ public class KyselyActivity extends AppCompatActivity {
         kysymykset.add("Oletko nukkunut hyvin?");
         kysymykset.add("Haluatko kuunnella musiikkia?");
 
-
-
-        vastaukset.add("Kävelylenkki. Laita rentouttavaa musiikkia soimaan ja keskity maisemiin");
-        vastaukset.add("Rentouttavaa joogaa.");
-        vastaukset.add("Ryhmäjumpaa, musiikilla tai ilman.");
-        vastaukset.add("Rentoutumishetki. Keskity hengitykseen ja positiivisiin ajatuksiin.");
-
         TextView kysymys = findViewById(R.id.kysymys);
         kysymys.setText(kysymykset.get(0));
     }
 
+    /**
+     * Executes when either one of the answer buttons is pressed.
+     * Determines which button was pressed and adds points for the relaxing acitivities matching the user's answer.
+     * Calls muodostaVastaus function at the end.
+     * @param view The button.
+     */
     public void onButtonPress(View view) {
-        Button button1 = findViewById(R.id.vastaus1);
-        Button button2 = findViewById(R.id.vastaus2);
         TextView kysymys = findViewById(R.id.kysymys);
         if (this.kysymysNumero == 0) {
             if (view == findViewById(R.id.vastaus1)) {
@@ -109,6 +112,10 @@ public class KyselyActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Chooses a relaxing activity for the user based off their answers in the survey.
+     * Sends the relaxing activity's name and description with intent to VastausAcitivity.java.
+     */
     public void muodostaVastaus() {
         String vastausNimi = "vastaus";
         String vastausKuvaus = "kuvaus";
