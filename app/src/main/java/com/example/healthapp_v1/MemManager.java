@@ -21,6 +21,12 @@ import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+/**
+ * Kyselyn tallentaminen
+ * @author Kirill Keranen (ryhmä 7)
+ * @author Alex L (ryhmä 9)
+ *
+ */
 public class MemManager {
     public static MemManager instance = new MemManager();
     private static final String FILE_ID = "MEMORY_APP_PRIVATEALLOCATION";
@@ -28,22 +34,36 @@ public class MemManager {
     private JSONObject json_store;
 
 
+
     private MemManager(){
         Log.d("STORAGE", "hi");
 
     }
 
-    public String verbose(){//palauttaa json stringinä
+    /**
+     *
+     * @return palauttaa json stringina
+     */
+    public String verbose(){//
         return json_store.toString();
     }
 
-    public void purge(Context context){// tuhoaa tiedoston jos jokin menee vikaan, voi menettää koko datan
+    /**
+     *
+     *  @param context tuhoaa tiedoston jos jokin menee vikaan, voi menettaa koko datan
+     */
+    public void purge(Context context){//
         context.deleteFile(FILE_ID);
 
     }
 
-    public void init(Context _context){
-        File internal_filepath = _context.getFilesDir();
+    /**
+     *  Alustaa puhelimen muistista json-muotoisen tiedoston
+     *  Jos tiedosto ei loydy, se luo stringistä tyhjän json tiedoston
+     *  @param context activityn konteksti
+     */
+    public void init(Context context){
+        File internal_filepath = context.getFilesDir();
         File fileref = new File(internal_filepath, FILE_ID);
         byte[] content;//8-bitin lista
 
@@ -79,7 +99,7 @@ public class MemManager {
     }
 
     /**
-     * Palauttaa JSONlistasta objektin
+     * Palauttaa JSON listasta objektin
      * @author keran
      * @param name JSONlistan alkion nimi
      * @return Object JSON listan alkio
@@ -88,10 +108,21 @@ public class MemManager {
         return json_store.opt(name);
     }
 
+    /**
+     *  jos json tiedostossa on stringin niminen alkio
+     * @param name JSONlistan alkion nimi
+     * @return palauttaa json tiedoston
+     */
     public boolean has(String name){
         return json_store.has(name);
+
     }
 
+    /**
+     * tuodaan tietyn nimisesta lokerosta dataa
+     * @param name datalokero
+     * @param list
+     */
     public void get(String name, ArrayList list){
         JSONArray jar = json_store.optJSONArray(name);
 
@@ -104,6 +135,11 @@ public class MemManager {
         }
     }
 
+    /**
+     * Tallenetaan uusi tieto tiedostoon
+     * @param name JSON listan alkion nimi
+     * @param item objekti
+     */
     public void add(String name, Object item){
         try{
             json_store.putOpt(name, item);
@@ -116,22 +152,30 @@ public class MemManager {
     }
 
 
-
-    public void add(String name, ArrayList list){//muuttaa arraylistin sisällön json muotoon.
+    /**
+     * Muuttaa arraylistin sisällön json muotoon ja tallentaa
+     * @param name
+     * @param list Json-t
+     */
+    public void add(String name, ArrayList list){
         JSONArray jar = new JSONArray();
 
         for(Object item : list){
             jar.put(item);
         }
 
-        try {
+        try {// tallentaa
             json_store.putOpt(name, jar);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public void save(Context context){// tallenetaan tiedosto  internalliin
+    /**
+     * lisätään laitteen omaan muistiin uusi tieto
+     * @param context activityn konteksti
+     */
+    public void save(Context context){
         File internal_filepath = context.getFilesDir();
         File fileref = new File(internal_filepath, FILE_ID);
 

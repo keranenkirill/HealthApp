@@ -10,7 +10,10 @@ import android.view.View;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-
+/**
+ * information about developers an application (not ready yet)
+ * @author Kirill Keränen
+ */
 public class AboutUs extends AppCompatActivity {
     //initialize variable
     DrawerLayout drawerLayout;

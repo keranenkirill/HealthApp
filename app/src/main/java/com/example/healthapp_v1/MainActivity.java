@@ -1,6 +1,7 @@
 package com.example.healthapp_v1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import android.app.Activity;
@@ -26,19 +27,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-
+/**
+ * Main Page and list-history operations
+ * @author Kirill Keränen
+ */
 public class MainActivity extends AppCompatActivity {
-    //initialize variable
     DrawerLayout drawerLayout;
-    FloatingActionButton fab;
 
     public static final String EXTRA_MESSAGE = "com.example.project.MESSAGE";
-
-    String vastaus;
-
-    //public static void Logout(AboutUs aboutUs) {
-   // }
-
 
 
     @Override
@@ -59,60 +55,55 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
     }
 
+    /**
+     * Luo uuden kysely aktiviteetin
+     *
+     * @author Jimi Takamaki
+     * @param view valikon käyttöliittymä
+     */
     public void onFabClick(View view) {
         Intent intent = new Intent(this, KyselyActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Kutsuu openDrawerin
+     *
+     * @param view valikon käyttöliittymä
+     */
     public void ClickMenu(View view){
         //Open drawer
         openDrawer(drawerLayout);
 
-        ArrayList<String> nimetMuistiin = new ArrayList<>();
-
-        Collections.addAll(nimetMuistiin,"Fucker", "Shitface", "Assbutter", "Tall fucker");
-
-        MemManager.instance.add("numerot", nimetMuistiin);
-
-
-        ArrayList<String> nimetMuistista = new ArrayList<>();
-
-        MemManager.instance.get("numerot", nimetMuistista);
-
-
-
-        JSONArray nimetMuistista2 = (JSONArray)MemManager.instance.get("numerot");
-
-
-
-
-
-        for(String item : nimetMuistista){
-            Log.w("VARASTO", item);
-        }
-
-        Log.w("VARASTO", "" + MemManager.instance.verbose());
-
-
-
-
-
     }
 
+    /**
+     * Avaa sivuvalikon
+     *
+     * @param drawerLayout sivuvalikko
+     */
     public static void openDrawer(DrawerLayout drawerLayout){
-        //Open drawer Layout
         drawerLayout.openDrawer(GravityCompat.START);
 
     }
 
+    /**
+     * Kutsuu metodin joka sulkee valikon
+     *
+     * @param view valikon käyttöliittymä
+     */
     public void ClickLogo(View view){
-        //Close drawer
         closeDrawer(drawerLayout);
         
     }
 
+    /**
+     * Tarkistaa onko sivuvalikko auki, jos auki niin sulkee
+     *
+     * @param drawerLayout sivuvalikko
+     */
     public static void closeDrawer(DrawerLayout drawerLayout) {
-        //close drawer layout
+
         //check condition
         if (drawerLayout.isDrawerOpen(GravityCompat.START)){
             //whn drawer is open
@@ -123,71 +114,76 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void ClickHome(View view){
-        //recreate activity
-        //recreate();
-
-
-
-    }
-
     public void ClickDashboard(View view){
         //redirect activity to dashboard
         redirectActivity(this,Dashboard.class);
-
     }
 
-    public static void redirectActivity(Activity activity, Class aClass) {
-        //initialize intetnt
+    /**
+     * Siirtyy yhdesta toiseen toimintaan
+     *
+     * @param activity toiminta
+     * @param aClass hakee AppCompatActivity tyyppisen luokan
+     */
+    public static void redirectActivity(Activity activity, Class<?extends AppCompatActivity> aClass) {
+
         Intent intent = new Intent(activity, aClass);
-        //set flag
+
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //start activity
+
         activity.startActivity(intent);
 
     }
 
+    /**
+     * Siirtyy yhdestä toiseen toimintaan
+     *
+     * @param view valikon käyttöliittymä
+     */
     public void ClickAboutUs(View view){
-        //redirect activity to aboutus
         redirectActivity(this, AboutUs.class);
 
     }
 
-
+    /**
+     * Kutsuu metodin, joka mahdollistaa sovelluksensta poistumisen
+     *
+     * @param view valikon käyttöliittymä
+     */
     public void ClickLogout(View view){
         //close app
         logout(this);
 
     }
 
+    /**
+     * Metodi käynistyessään kysyy käyttäjältä haluaako poistua. Jos "Yes" niin poistuu.
+     * Jos "No" niin pysyy sovelluksessa
+     *
+     * @param activity toiminta
+     */
     public void logout(final Activity activity) {
-        //Initialize alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        //Set title
+
         builder.setTitle("Logout");
-        //set message
+
         builder.setMessage("Are you sure you want to quit?");
-        //positive yes button
+
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Finish activity
                 activity.finishAffinity();
-                //Exit app
                 System.exit(0);
 
             }
         });
-        //Negative button
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Dismiss dialog
                 dialog.dismiss();
 
             }
         });
-        //show dialog
         builder.show();
 
     }
@@ -195,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        //close drawer
         closeDrawer(drawerLayout);
         MemManager.instance.save(this);
     }
@@ -205,13 +200,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         ArrayList<String> historia = new ArrayList<>();
-
         MemManager.instance.get("historia", historia);
-
-
         ListView listViewHomer = findViewById(R.id.homer);
-
-
         listViewHomer.setAdapter(new ArrayAdapter<String>(
 
                 this, R.layout.historia_alkio_layout, historia
