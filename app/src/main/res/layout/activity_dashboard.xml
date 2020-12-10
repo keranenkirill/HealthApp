@@ -8,6 +8,7 @@
     android:id="@+id/drawer_layout"
     tools:context=".Dashboard">
 
+    <!--@author Kirill Keränen-->
 
     <LinearLayout
         android:layout_width="match_parent"
